@@ -21,5 +21,14 @@
 			"cwd": "${workspaceFolder}/Frontend",
 			"preLaunchTask": "launch backend"
 		},
+		{
+			"name": "Launch Frontend",
+			"request": "launch",
+			"type": "msedge",
+			"url": "http://localhost:5173",
+			"webRoot": "${workspaceFolder}/Frontend",
+			"cwd": "${workspaceFolder}/Frontend",
+			"preLaunchTask": "launch vite"
+		},
 	]
 }
