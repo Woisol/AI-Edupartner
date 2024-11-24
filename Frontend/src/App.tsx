@@ -1,18 +1,14 @@
 import { useState } from "react";
-import ContentCard, { CardProps } from "./components/Card";
-import { Alert, Card } from "@mui/material";
+import ContentCard, { CardProps } from "./components/ContentCard";
+import { Alert, Button, Card } from "@mui/material";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const cardsProps: CardProps[] = [
-	{ title: "Card 1", content: "This is the content of card 1." },
-	{ title: "Card 2", content: "This is the content of card 2." },
-	{ title: "Card 3", content: "This is the content of card 3." },
-]
-
 export default function App() {
 	const [dropping, setDropping] = useState(false)
-	const [voiceFile, setVoiceFile] = useState("");
+	// const [voiceFile, setVoiceFile] = useState("");
+
+	const [originText, setOriginText] = useState("");
 
 	function handleDrop(event: React.DragEvent<HTMLDivElement>) {
 		event.preventDefault()
@@ -24,43 +20,33 @@ export default function App() {
 		const reader = new FileReader()
 		reader.readAsText(file)
 		reader.onload = (e) => {
-			// let data
-			// try {
-			// 	data = JSON.parse(e.target!.result as string)
-			// } catch (e) {
-			// 	if (e instanceof SyntaxError) {
-			// 		alert('文件内容不是JSON格式，请确认放入了程序输出的文件！')
-			// 		setDropping(false)
-			// 		return;
+			// data = JSON.parse(e.target!.result as string)
+			// if (typeof data === typeof keywordDatas) {
+			setOriginText(e.target!.result as string);
+
+
+			// const formData = new FormData();
+			// formData.append('language', 'zh');
+			// formData.append('model', 'tiny');
+			// formData.append('response_format', 'json');
+			// axios.post('http://127.0.0.1:9977/api', formData, {
+			// 	headers: {
+			// 		'Content-Type': 'multipart/form-data'
 			// 	}
-			// }
-			// // if (typeof data === typeof keywordDatas) {
-			// // !哇趣，补全出来的类型检查！
-			// if (data && Object.values(data).every(v => Array.isArray(v) && v.every(d => typeof d === 'object' && 'line' in d && 'count' in d))) {
-			// 	setVoiceFile(data!)
-			// }
-			// else { alert('数据格式错误，请确认放入了程序输出的文件！') }
-			const formData = new FormData();
-			formData.append('file', e.target!.result as string);
-			formData.append('language', 'zh');
-			formData.append('model', 'base');
-			formData.append('response_format', 'json');
-			axios.post('http://127.0.0.1:9977/api', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
-			})
-				.then(res =>
-					console.log(res))
-				.catch(err => {
-					if (err) console.error(err)
-				})
+			// })
+			// 	.then(res =>
+			// 		console.log(res))
+			// 	.catch(err => {
+			// 		if (err) console.error(err)
+			// 	})
 			// axios.post('http://127.0.0.1:9977/api', { "language": "zh", "model": "tiny", "response_format": "text", 'file': e.target!.result },).then(res => console.log(res)).catch(err => console.error(err))
 
 			setDropping(false)
+			// }
+
+
 		}
 	}
-
 	const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault()
 		setDropping(true)
@@ -72,23 +58,25 @@ export default function App() {
 	}
 
 	return (
-		<div className="w-screen h-screen relative bg-[#FAFAFA]">
-			{voiceFile ?
-				<div className="w-[800px] h-[600px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl flex">
-					<div className="flex-1">
-						<ContentCard title="课堂原文" content="这是一段课堂原文。"></ContentCard>
+		<div className="w-screen h-screen relativ bg-[#FAFAFA]">
+			{originText ?
+				<>
+					<div className="w-[800px h-[600px size-[calc(100%-40px)] mx-auto absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-whit rounded-2xl shadow-2xl flex">
+						<div className="flex-1 shrink-0 max-w-[800px]">
+							<ContentCard title="课堂原文" content={originText}></ContentCard>
+						</div>
+						<div className="flex-1 shrink-0 max-w-[800px] flex flex-col">
+							{([{ title: 'AI总结', content: '' }, { title: '重难点推断', content: '' }, { title: '扩展', content: '' }] as CardProps[]).map((card, index) => <ContentCard key={index} {...card} />)}
+						</div>
+						<div className="flex-1 shrink-0 max-w-[800px]">
+							<ContentCard title="AI对话" content="这是一段课堂翻译。"></ContentCard>
+						</div>
 					</div>
-					<div className="flex-1">
-						{[{ title: '', content: '' } as CardProps].map((card, index) => <Card key={index} {...card} />)}
-					</div>
-					<div className="flex-1">
-						<ContentCard title="课堂翻译" content="这是一段课堂翻译。"></ContentCard>
-					</div>
-
-				</div> :
+					<Button variant="contained" size="large" className="!fixed right-6 bottom-6" onClick={() => { setOriginText("") }}>清空</Button>
+				</> :
 				<>
 					<div className={`size-[400px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl `} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
-						{!voiceFile && <h2 className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-nowrap font-bold pointer-events-none transition-all duration-300 ${dropping ? 'opacity-0' : 'opacity-100'}`}>将音频拖拽到此</h2>
+						{!originText && <h2 className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-nowrap font-bold pointer-events-none transition-all duration-300 ${dropping ? 'opacity-0' : 'opacity-100'}`}>将文本文件拖拽到此</h2>
 						}
 					</div>
 					<div className={`size-[400px] bg-gray-700 rounded-2xl pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-300 ${dropping ? 'opacity-30' : 'opacity-0'}`}>
