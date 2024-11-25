@@ -1,8 +1,8 @@
 import { useState } from "react";
 import ContentCard, { CardProps } from "./components/ContentCard";
-import { Alert, Button, Card } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export default function App() {
 	const [dropping, setDropping] = useState(false)
@@ -18,27 +18,36 @@ export default function App() {
 		// 	toast.error('请选择音频文件！');
 		// }
 		const reader = new FileReader()
-		reader.readAsText(file)
+		reader.readAsArrayBuffer(file)
 		reader.onload = (e) => {
 			// data = JSON.parse(e.target!.result as string)
 			// if (typeof data === typeof keywordDatas) {
-			setOriginText(e.target!.result as string);
+			// setOriginText(e.target!.result as string);
 
 
-			// const formData = new FormData();
-			// formData.append('language', 'zh');
-			// formData.append('model', 'tiny');
-			// formData.append('response_format', 'json');
-			// axios.post('http://127.0.0.1:9977/api', formData, {
-			// 	headers: {
-			// 		'Content-Type': 'multipart/form-data'
-			// 	}
-			// })
-			// 	.then(res =>
-			// 		console.log(res))
-			// 	.catch(err => {
-			// 		if (err) console.error(err)
-			// 	})
+			const formData = new FormData();
+			// const data = {
+			// 	"language": "zh",
+			// 	"model": "small",
+			// 	"response_format": "json",
+			// }
+			// formData.append('data', data);
+			formData.append('language', 'zh');
+			formData.append('model', 'tiny');
+			formData.append('response_format', 'text');
+			// @ts-expect-erro wrong type
+			// formData.append('file', file, file.name);
+			// ！只要发送了过一会才反应一直是已经成功了的()，都怪axios的问题跨域甚至跨端口都不行……一直以为是参数问题排查了好久还抓了包服了……
+			formData.append('file', new Blob([e.target!.result!]), file.name);
+			// formData.append('file', e.target!.result as string);
+			axios.post('/api', formData)
+				// , { headers: { 'Content-Type': 'multipart/form-data' } }
+				.then(res =>
+					console.log(res))
+				.catch((err: AxiosError) => {
+					console.log(err.response?.data)
+					if (err) console.error(err)
+				})
 			// axios.post('http://127.0.0.1:9977/api', { "language": "zh", "model": "tiny", "response_format": "text", 'file': e.target!.result },).then(res => console.log(res)).catch(err => console.error(err))
 
 			setDropping(false)
