@@ -7,13 +7,20 @@ import { Close, CopyAll, Send } from "@mui/icons-material";
 import useAIContent from "./hooks/useAIContent";
 import { testChatMsg } from "./constants/test";
 import ChatBubble from "./components/chatBubble";
-import { openai_send } from "../../utils/ai";
+import { aiapi } from "../../utils/ai";
+import ContentCardConclusion from "./components/content-card/content-card-conclusion";
 
+// export let originText;
 export default function Classmate() {
 	const [dropping, setDropping] = useState(false)
 
 	const [voiceFile, setVoiceFile] = useState<File | null>(null);
 	const [originText, setOriginText] = useState("");
+	function handleOriginTextChange(text: string) {
+		setOriginText(text);
+		// originText = text;
+		aiapi.init(text);
+	}
 	const [chatInput, setChatInput] = useState("");
 
 	const { conclusion, setConclusion, key, setKey, extra, setExtra, question, setQuestion, chatMsg, setChatMsg } = useAIContent();
@@ -36,13 +43,13 @@ export default function Classmate() {
 				// data = JSON.parse(e.target!.result as string)
 				// if (typeof data === typeof keywordDatas) {
 				// setOriginText(e.target!.result as string);
-				getVoiceCVResult(e.target!.result!, file.name, setOriginText);
+				getVoiceCVResult(e.target!.result!, file.name, handleOriginTextChange);
 
 			}
 			else if (file.type.startsWith('text')) {
 				const textDecoder = new TextDecoder('utf-8')
 				const text = textDecoder.decode(e.target!.result as ArrayBuffer)
-				setOriginText(text);
+				handleOriginTextChange(text);
 			}
 
 			setDropping(false)
@@ -61,7 +68,7 @@ export default function Classmate() {
 	}
 
 	function handleChatSend() {
-		openai_send(chatInput, chatMsg, setChatMsg)
+		aiapi.send(chatInput, chatMsg, setChatMsg)
 		setTimeout(() => {
 			setChatInput('')
 		}, 100)
@@ -75,12 +82,14 @@ export default function Classmate() {
 					<div className="w-[800px h-[600px size-[calc(100%-150px)] mx-auto p-1 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-whit rounded-2xl shadow-2xl flex gap-2">
 						<div className="flex-1 shrink-0 max-w-[800px]">
 							<ContentCard title="课堂原文" content={[
-								<video className={`w-full h-16 mb-4 ${voiceFile?.name ? '' : 'hidden'}`} src={URL.createObjectURL(voiceFile!)} controls />, <div className="pt-3 border-gray-400 border-t-2">{originText}</div>
+								<video className={`w-full h-16 mb-4 ${voiceFile?.name ? '' : 'hidden'}`} src={URL.createObjectURL(voiceFile!)} controls />,
+								<div className="pt-3 border-gray-400 border-t-2">{originText}</div>
 							]} action={[
 								<IconButton className="!ml-auto" size="large" onClick={() => { navigator.clipboard.writeText(originText); toast.success('已复制到剪贴板') }}><CopyAll /></IconButton>
 							]} regenerate={false}></ContentCard>
 						</div>
 						<div className="flex-1 shrink-0 max-w-[800px] flex flex-col">
+							<ContentCardConclusion />
 							{([{ title: 'AI总结', content: conclusion }, { title: '重难点推断', content: key }, { title: '扩展', content: extra }, { title: '小测试', content: question }] as CardProps[]).map((card, index) => <ContentCard key={index} {...card} />)}
 						</div>
 						<div className="flex-1 shrink-0 max-w-[800px] relative">
@@ -90,13 +99,13 @@ export default function Classmate() {
 										{chatMsg.map((msg, index) => <ChatBubble key={index} chatMsg={msg} />)}
 									</div>
 									<div className="w-[calc(100%-2rem)] h-[50px absolute mt-auto left-4 bottom-4 flex items-end backdrop-blur-sm bg-white bg-opacity-30">
-										<Input placeholder="还有什么问题吗？" multiline className="w-full h-full" value={chatInput} onChange={(e) => { setChatInput(e.target.value) }} onKeyDown={(e) => { if (e.key === 'Enter' && e.shiftKey === false) { handleChatSend(chatInput) } }} />
+										<Input placeholder="还有什么问题吗？" multiline className="w-full h-full" value={chatInput} onChange={(e) => { setChatInput(e.target.value) }} onKeyDown={(e) => { if (e.key === 'Enter' && e.shiftKey === false) { handleChatSend() } }} />
 										<IconButton className="size-[50px] !rounded-md" onClick={handleChatSend}><Send /></IconButton>
 									</div>
 								</div>} action={[<Button className="!ml-auto" variant="contained" size="large" onClick={() => { setChatMsg([]); setChatInput(''); }}>开始新对话</Button>]} regenerate={false}></ContentCard>
 						</div>
 					</div>
-					<Button variant="contained" size="large" className="!fixed right-3 bottom-3" onClick={() => { setOriginText(""); setVoiceFile(null); }}><Close />清空</Button>
+					<Button variant="contained" color="error" size="large" className="!fixed right-3 bottom-3" onClick={() => { handleOriginTextChange(""); setVoiceFile(null); }}><Close />清空</Button>
 				</> :
 				<>
 					<div className={`size-[400px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl `} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>

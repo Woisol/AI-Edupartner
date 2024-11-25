@@ -14,3 +14,9 @@
 	border-radius: 10px;
 	border: 3px solid #1976D3;
 }
+
+/* //**----------------------------MUI Overwrite----------------------------------------------------- */
+/* //**----------------------------Autocomplete----------------------------------------------------- */
+.muiautocomplete-compact>div>div{
+	padding: 5px !important;
+}
