@@ -34,7 +34,7 @@ async function openai_send(msg: string, curMsg: ChatMessage[], setChatMsg: (msg:
 }
 async function openai_get(prompt: string, setContent: (content: string) => void) {
 	// TODO to delete
-	// return;
+	return;
 
 	bgChats = [...bgChats, { role: 'user', content: prompt }];
 	const stream = await client.beta.chat.completions.stream({

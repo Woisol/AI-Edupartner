@@ -16,12 +16,12 @@ export type PromptKey = {
 	num: PromptNum
 }
 export type PromptExtra = {
-	direction: string,
+	direction: Fields,
 	withExplaintion: boolean,
 	difficulty: PromptDifficulty
 }
 export type PromptQues = {
-	dificulty: PromptDifficulty,
+	difficulty: PromptDifficulty,
 }
 export function prompt_origin({ originText }: PromptOrigin) {
 	return `请你详细阅读以下课堂授课内容的内容，并回答我后续的问题：\n${originText}`
@@ -35,6 +35,6 @@ export function prompt_key({ num }: PromptKey) {
 export function prompt_extra({ direction, withExplaintion, difficulty }: PromptExtra) {
 	return `请你根据以上内容，尝试往${direction}的方向拓展一些${difficulty}知识，要求${withExplaintion ? '同时介绍这方面的知识' : '只罗列方向，不要做任何解释'}`
 }
-export function prompt_ques({ dificulty }: PromptQues) {
-	return `请你根据以上内容向学生提出几个${dificulty}问题巩固学生的基础并给出答案，要求每个问题和答案都换一行输出。`
+export function prompt_ques({ difficulty }: PromptQues) {
+	return `请你根据以上内容向学生提出几个${difficulty}问题巩固学生的基础并给出答案，要求每个问题和答案都换一行输出。`
 }

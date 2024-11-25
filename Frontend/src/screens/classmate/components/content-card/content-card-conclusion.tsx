@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { aiapi } from "../../../../utils/ai";
 import ContentCard from "../../../../components/ContentCard";
 import { Fields, FieldsArray, PromptDetail } from "../../constants/ai";
-import { TextField } from "@mui/material";
 import Autocomplete from "../../../../components/Autocomplete";
 
 export default function ContentCardConclusion() {

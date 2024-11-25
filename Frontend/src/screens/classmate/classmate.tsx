@@ -9,6 +9,9 @@ import { testChatMsg } from "./constants/test";
 import ChatBubble from "./components/chatBubble";
 import { aiapi } from "../../utils/ai";
 import ContentCardConclusion from "./components/content-card/content-card-conclusion";
+import ContentCardKey from "./components/content-card/content-card-key";
+import ContentCardExtra from "./components/content-card/content-card-Extra";
+import ContentCardQues from "./components/content-card/content-card-ques";
 
 // export let originText;
 export default function Classmate() {
@@ -88,15 +91,18 @@ export default function Classmate() {
 								<IconButton className="!ml-auto" size="large" onClick={() => { navigator.clipboard.writeText(originText); toast.success('已复制到剪贴板') }}><CopyAll /></IconButton>
 							]} regenerate={false}></ContentCard>
 						</div>
-						<div className="flex-1 shrink-0 max-w-[800px] flex flex-col">
+						<div className="flex-1 shrink-0 max-w-[800px] h-fi max-h-full overflow-y-auto flex flex-col">
 							<ContentCardConclusion />
-							{([{ title: 'AI总结', content: conclusion }, { title: '重难点推断', content: key }, { title: '扩展', content: extra }, { title: '小测试', content: question }] as CardProps[]).map((card, index) => <ContentCard key={index} {...card} />)}
+							<ContentCardKey />
+							<ContentCardExtra />
+							<ContentCardQues />
+							{/* {([{ title: 'AI总结', content: conclusion }, { title: '重难点推断', content: key }, { title: '扩展', content: extra }, { title: '小测试', content: question }] as CardProps[]).map((card, index) => <ContentCard key={index} {...card} />)} */}
 						</div>
 						<div className="flex-1 shrink-0 max-w-[800px] relative">
 							<ContentCard title="AI对话" content={
 								<div className="w-full h-full h-[calc(100%-80px)">
-									<div className="h-full pb-[100px] flex flex-col gap-4 items-start overflow-y-auto">
-										{chatMsg.map((msg, index) => <ChatBubble key={index} chatMsg={msg} />)}
+									<div className="h-full pb-[100px] flex flex-col gap-4 items-start overflow-y-auto relative">
+										{chatMsg.length === 0 ? <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-center font-bold whitespace-pre-wrap text-nowrap">还有别的问题？<br />在下方开始对话吧！</div> : chatMsg.map((msg, index) => <ChatBubble key={index} chatMsg={msg} />)}
 									</div>
 									<div className="w-[calc(100%-2rem)] h-[50px absolute mt-auto left-4 bottom-4 flex items-end backdrop-blur-sm bg-white bg-opacity-30">
 										<Input placeholder="还有什么问题吗？" multiline className="w-full h-full" value={chatInput} onChange={(e) => { setChatInput(e.target.value) }} onKeyDown={(e) => { if (e.key === 'Enter' && e.shiftKey === false) { handleChatSend() } }} />
