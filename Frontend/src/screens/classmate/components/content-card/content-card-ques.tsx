@@ -18,6 +18,6 @@ export default function ContentCardQues() {
 	return (
 		<ContentCard title="测验" content={content} action={[
 			<Autocomplete label="难度" options={['简单', '常见', '少见', '专业']} setContent={setDifficulty as (value: string) => void} />
-		]} onRegenerate={generate} />
+		]} onRegenerate={generate} defautlExpanded={false} />
 	)
 }

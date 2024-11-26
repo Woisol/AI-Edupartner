@@ -18,6 +18,6 @@ export default function ContentCardKey() {
 	return (
 		<ContentCard title="重难点" content={content} action={[
 			<Autocomplete label="数量" options={['最少', '较少', '一般多', '较多', '最多']} setContent={setNum as (value: string) => void} />
-		]} onRegenerate={generate} />
+		]} onRegenerate={generate} defautlExpanded={false} />
 	)
 }

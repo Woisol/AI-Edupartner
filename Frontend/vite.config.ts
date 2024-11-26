@@ -11,7 +11,7 @@ export default defineConfig({
         target: `http://127.0.0.1/p-server/api`,
         changeOrigin: true,
         // !这个必须有不然404
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       }
     },
   },

@@ -24,6 +24,6 @@ export default function ContentCardExtra() {
 			<Autocomplete label="课外拓展" options={FieldsArray} setContent={setDirection as (value: string) => void} />,
 			<FormControlLabel label='解释' control={<Switch checked={withExplaintion} onChange={(_e, checked) => setWithExplaintion(checked)} />} />,
 			<Autocomplete label="难度" options={['简单', '常见', '少见', '专业']} setContent={setDifficulty as (value: string) => void} />
-		]} onRegenerate={generate} />
+		]} onRegenerate={generate} defautlExpanded={false} />
 	)
 }

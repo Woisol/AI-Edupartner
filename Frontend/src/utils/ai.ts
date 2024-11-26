@@ -6,6 +6,7 @@
 import OpenAI from "openai";
 import { ChatMessage } from "../types/ai";
 import { prompt_conclusion, prompt_extra, prompt_key, prompt_origin, prompt_ques, PromptConclusion, PromptExtra, PromptKey, PromptQues } from "../screens/classmate/constants/ai";
+import { toast } from "react-toastify";
 
 let bgChats: ChatMessage[] = [];
 export function clearBgChats() { bgChats = []; }
@@ -31,6 +32,9 @@ async function openai_send(msg: string, curMsg: ChatMessage[], setChatMsg: (msg:
 		output += delta;
 		setChatMsg([...curMsg, { role: 'system', content: output }]);
 	})
+	stream.on('error', (error) => {
+		toast.error("暂时无法连接到AI，请过段时间再试，错误信息：" + error.message)
+	})
 }
 async function openai_get(prompt: string, setContent: (content: string) => void) {
 	// TODO to delete
@@ -49,6 +53,9 @@ async function openai_get(prompt: string, setContent: (content: string) => void)
 	})
 	stream.on('end', () => {
 		bgChats = [...bgChats, { role: 'system', content: output }];
+	})
+	stream.on('error', (error) => {
+		toast.error("暂时无法连接到AI，请过段时间再试，错误信息：" + error.message)
 	})
 
 }

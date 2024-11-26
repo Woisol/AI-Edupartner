@@ -25,7 +25,7 @@ export type PromptQues = {
 	difficulty: PromptDifficulty,
 }
 export function prompt_origin({ originText }: PromptOrigin) {
-	return `请你详细阅读以下课堂授课内容的内容，并回答我后续的问题：\n${originText}`
+	return `请你详细阅读以下课堂授课内容的内容，这些内容可能来自PPT，如果我后续问到请你知晓，然后请你回答我后续的问题：\n${originText}`
 }
 export function prompt_conclusion({ field, detail }: PromptConclusion) {
 	return `你现在是一名${field && field[0] !== '' ? `在${field}方面` : ''}教学经验丰富的教师，请你${detail}地总结上述的课堂授课内容。`

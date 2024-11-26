@@ -117,7 +117,7 @@ export default function Classmate() {
 								<IconButton className="!ml-auto" size="large" onClick={() => { navigator.clipboard.writeText(originText); toast.success('已复制到剪贴板') }}><CopyAll /></IconButton>
 							]} regenerate={false}></ContentCard>
 						</div>
-						<div className="flex-1 shrink-0 max-w-[800px h-fi max-h-full overflow-y-auto flex flex-col">
+						<div className="flex-1 shrink-0 max-w-[800px h-fi max-h-full overflow-y-auto fle flex-col">
 							<ContentCardConclusion />
 							<ContentCardKey />
 							<ContentCardExtra />
