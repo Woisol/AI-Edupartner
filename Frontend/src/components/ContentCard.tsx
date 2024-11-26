@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import Markdown from "react-markdown";
 
 export interface CardProps {
 	title: string;
@@ -23,7 +24,12 @@ export default function ContentCard({ title, content, action, regenerate = true,
 				{/* </div> */}
 			</div>
 			<div className="max-h-[calc(100%-6rem)] flex-1 p-5 overflow-y-auto whitespace-pre-wrap">
-				{content}
+				{typeof content === "string" ?
+					<Markdown>
+						{content}
+					</Markdown> :
+					content
+				}
 			</div>
 		</div>
 		// <Card variant="outlined" style={{ width: "100%", height: "100%", flex: 1, borderRadius: '10px' }}>

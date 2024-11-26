@@ -15,7 +15,9 @@ export default function ContentCardExtra() {
 		aiapi.get.extra(setContent, { direction, withExplaintion, difficulty })
 	}
 	useEffect(() => {
-		generate();
+		setTimeout(() => {
+			generate();
+		}, 2000)
 	}, [])
 	return (
 		<ContentCard title="课外拓展" content={content} action={[

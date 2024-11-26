@@ -11,7 +11,9 @@ export default function ContentCardKey() {
 		aiapi.get.key(setContent, { num })
 	}
 	useEffect(() => {
-		generate();
+		setTimeout(() => {
+			generate();
+		}, 1000)
 	}, [])
 	return (
 		<ContentCard title="重难点" content={content} action={[

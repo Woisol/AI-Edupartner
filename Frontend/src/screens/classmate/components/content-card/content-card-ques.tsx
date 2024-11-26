@@ -11,7 +11,9 @@ export default function ContentCardQues() {
 		aiapi.get.ques(setContent, { difficulty })
 	}
 	useEffect(() => {
-		generate();
+		setTimeout(() => {
+			generate();
+		}, 3000)
 	}, [])
 	return (
 		<ContentCard title="测验" content={content} action={[

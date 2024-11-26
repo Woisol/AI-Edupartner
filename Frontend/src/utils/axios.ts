@@ -3,6 +3,7 @@ import 'react-toastify/ReactToastify.css'
 import { toast } from "./toast";
 
 export function getVoiceCVResult(file: string | ArrayBuffer, fileName: string, setOriginText: (text: string) => void) {
+	// !尝试用cuda加速，安装了一堆dll都不得，最后原来还是靠重启()注意有时候环境变量还是不一定马上生效的！你python还是venv
 	const formData = new FormData();
 	formData.append('language', 'zh');
 	formData.append('model', 'small');

@@ -1,5 +1,6 @@
-export type Fields = string | string[] | '数学' | '高中数学' | '数学分析' | '线性代数' | '离散数学' | '概率与数理分析' | '软件工程' | '算法' | '物理' | '英语'
-export const FieldsArray = ['数学', '高中数学', '数学分析', '线性代数', '离散数学', '概率与数理分析', '软件工程', '算法', '物理', '英语']
+// !wok合并数组和type的方法！
+export type Fields = typeof FieldsArray[number] | string[]
+export const FieldsArray = ['数学', '高中数学', '数学分析', '线性代数', '离散数学', '概率与数理分析', '软件工程', '算法', '物理', '英语', '政治'] as const
 // enum FieldsEnum { '数学', '高中数学', '数学分析', '线性代数', '离散数学', '概率与数理分析', '软件工程', '算法', '物理', '英语' }
 export type PromptDetail = '详细' | '较详细' | '较简略' | '简略'
 export type PromptNum = '最少' | '较少' | '一般多' | '较多' | '最多'
