@@ -8,5 +8,5 @@ interface AutocompleteProps {
 	setContent: (content: string) => void,
 }
 export default function Autocomplete({ width, label, options, freeSolo = false, setContent }: AutocompleteProps) {
-	return <MUIAutocomplete className="muiautocomplete-compact" sx={{ width: 120, height: 40, lineHeight: 40 }} disablePortal options={options} freeSolo={freeSolo} onChange={(_, value) => setContent(value as PromptDetail)} renderInput={(params) => <TextField {...params} label={label} />} />
+	return <MUIAutocomplete className="muiautocomplete-compact" sx={{ width: width || 120, height: 40, lineHeight: 40 }} disablePortal options={options} freeSolo={freeSolo} onChange={(_, value) => setContent(value as PromptDetail)} renderInput={(params) => <TextField {...params} label={label} />} />
 }

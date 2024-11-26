@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { aiapi } from "../../../../utils/ai";
 import ContentCard from "../../../../components/ContentCard";
-import { PromptDifficulty, PromptNum } from "../../constants/ai";
+import { PromptDifficulty } from "../../constants/ai";
 import Autocomplete from "../../../../components/Autocomplete";
 
 export default function ContentCardQues() {

@@ -6,7 +6,7 @@ import Autocomplete from "../../../../components/Autocomplete";
 
 export default function ContentCardConclusion() {
 	const [content, setContent] = useState('');
-	const [field, setField] = useState<Fields>('');
+	const [field, setField] = useState<Fields>(['']);
 	const [detail, setDetail] = useState<PromptDetail>('简略');
 	function generate() {
 		aiapi.get.conclude(setContent, { field, detail })
@@ -16,6 +16,7 @@ export default function ContentCardConclusion() {
 	}, [])
 	return (
 		<ContentCard title="AI总结" content={content} action={[
+			// @ts-expect-error readonly
 			<Autocomplete label="文章领域（填写后更准确）" options={FieldsArray} setContent={setField as (value: string) => void} />,
 			<Autocomplete label="详细程度" options={['简略', '较简略', '较详细', '详细']} setContent={setDetail as (value: string) => void} />
 		]} onRegenerate={generate} />

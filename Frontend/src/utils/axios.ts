@@ -13,8 +13,8 @@ export function getVoiceCVResult(file: string | ArrayBuffer, fileName: string, s
 	// ！只要发送了过一会才反应一直是已经成功了的()，都怪axios的问题跨域甚至跨端口都不行……一直以为是参数问题排查了好久还抓了包服了……
 	formData.append('file', new Blob([file]), fileName);
 	// formData.append('file', e.target!.result as string);
-	toast.info('正在识别中，可能需要较长时间，请耐心等候……');
-	axios.post('/api', formData)
+	toast.info('正在识别中，请稍等……');
+	axios.post('/p-server/api', formData)
 		// , { headers: { 'Content-Type': 'multipart/form-data' } }
 		.then((res: { data: { code: number, data: string, msg: string } }) => {
 			// console.log(res)
@@ -26,8 +26,9 @@ export function getVoiceCVResult(file: string | ArrayBuffer, fileName: string, s
 		})
 		.catch((err: AxiosError) => {
 			console.log(err.response?.data)
-			if (err) console.error(err)
+			// @ts-expect-error data type
+			toast.error('语音识别失败，错误信息:' + err.response ? err.response.data.msg : err.message);
+			// if (err) console.error(err)
 		})
-	// axios.post('http://127.0.0.1:9977/api', { "language": "zh", "model": "tiny", "response_format": "text", 'file': e.target!.result },).then(res => console.log(res)).catch(err => console.error(err))
 
 }

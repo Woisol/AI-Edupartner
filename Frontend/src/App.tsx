@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Classmate from "./screens/classmate/classmate";
 import { ToastContainer } from "react-toastify";
 

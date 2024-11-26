@@ -5,7 +5,6 @@
 
 import OpenAI from "openai";
 import { ChatMessage } from "../types/ai";
-import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { prompt_conclusion, prompt_extra, prompt_key, prompt_origin, prompt_ques, PromptConclusion, PromptExtra, PromptKey, PromptQues } from "../screens/classmate/constants/ai";
 
 let bgChats: ChatMessage[] = [];
@@ -28,7 +27,7 @@ async function openai_send(msg: string, curMsg: ChatMessage[], setChatMsg: (msg:
 		stream: true,
 	})
 	let output = '';
-	stream.on('content', (delta, _snapshot) => {
+	stream.on('content', (delta) => {
 		output += delta;
 		setChatMsg([...curMsg, { role: 'system', content: output }]);
 	})
@@ -44,7 +43,7 @@ async function openai_get(prompt: string, setContent: (content: string) => void)
 		stream: true,
 	})
 	let output = '';
-	stream.on('content', (delta, _snapshot) => {
+	stream.on('content', (delta) => {
 		output += delta;
 		setContent(output);
 	})
